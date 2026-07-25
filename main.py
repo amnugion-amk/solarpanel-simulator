@@ -1,0 +1,72 @@
+import pygame
+import solar_panel
+import resources
+import barriers
+import settings
+import sun
+
+pygame.init()
+
+screen = pygame.display.set_mode(settings.size)
+sunObj = sun.sunClass(settings.size[0], settings.size[1])
+clock = pygame.time.Clock()
+
+showingSun = False
+
+running = True
+
+def checkEvents():
+    global running, showingSun
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r and not solar_panel.placingPanel and len(resources.panels)<1:
+                solar_panel.initiatePanelPlacement()
+            elif event.key == pygame.K_r and solar_panel.placingPanel and len(resources.panels)<1:
+                solar_panel.finalizePanelPlacement()
+                
+                
+            if event.key == pygame.K_b and not barriers.placingBarrier:
+                barriers.initiateBarrierPlacement()
+            elif event.key == pygame.K_b and barriers.placingBarrier:
+                barriers.finalizeBarrierPlacement()
+                
+                
+            if event.key == pygame.K_z:
+                resources.removeLatestBarrier()
+                
+            if event.key == pygame.K_s:
+                resources.removeSolarPanel()
+                
+                
+            if event.key == pygame.K_e and not showingSun:
+                showingSun = True
+            elif event.key == pygame.K_e and showingSun:
+                showingSun = False
+                sunObj.reset()
+                    
+                    
+            if event.key == pygame.K_x:
+                resources.remove()
+
+def checkConditions():
+    if solar_panel.placingPanel:
+        solar_panel.whilePanelPlacement(screen)
+    if barriers.placingBarrier:
+        barriers.whileBarrierPlacement(screen)
+    if showingSun:
+        sunObj.update()
+        sunObj.draw(screen)
+
+while running:
+    screen.fill((settings.background))
+    resources.updateObjects(screen)
+    
+    checkEvents()
+    checkConditions()
+    
+    pygame.display.flip()
+    clock.tick(60)
+    
+pygame.quit()
