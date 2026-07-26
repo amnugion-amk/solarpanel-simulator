@@ -24,7 +24,7 @@ def checkEvents():
             if event.key == pygame.K_r and not solar_panel.placingPanel and len(resources.panels)<1:
                 solar_panel.initiatePanelPlacement()
             elif event.key == pygame.K_r and solar_panel.placingPanel and len(resources.panels)<1:
-                solar_panel.finalizePanelPlacement()
+                solar_panel.finalizePanelPlacement(solar_panel.currentPanel)
                 
                 
             if event.key == pygame.K_b and not barriers.placingBarrier:
@@ -56,8 +56,8 @@ def checkConditions():
     if barriers.placingBarrier:
         barriers.whileBarrierPlacement(screen)
     if showingSun:
-        sunObj.update()
-        sunObj.draw(screen)
+        sunObj.update(screen)
+        sunObj.draw(screen)   
 
 while running:
     screen.fill((settings.background))
