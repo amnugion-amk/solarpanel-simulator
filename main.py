@@ -10,7 +10,6 @@ pygame.init()
 screen = pygame.display.set_mode(settings.size)
 sunObj = sun.sunClass(settings.size[0], settings.size[1])
 clock = pygame.time.Clock()
-
 showingSun = False
 
 running = True
@@ -44,7 +43,9 @@ def checkEvents():
                 showingSun = True
             elif event.key == pygame.K_e and showingSun:
                 showingSun = False
+                print("Solar Panel Efficiency: " + str(int(sunObj.requestResults())) + "%")
                 sunObj.reset()
+                
                     
                     
             if event.key == pygame.K_x:

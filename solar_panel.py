@@ -38,7 +38,6 @@ def finalizePanelPlacement(panel):
     
 def whilePanelPlacement(screen):
     currentPanel.endPos = pygame.mouse.get_pos()
-    print(currentPanel.endPos + currentPanel.startPos)
     currentPanel.draw(screen)
     
 def removePanel():

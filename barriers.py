@@ -30,7 +30,6 @@ def finalizeBarrierPlacement():
     
 def whileBarrierPlacement(screen):
     currentBarrier.endPos = pygame.mouse.get_pos()
-    print(currentBarrier.endPos + currentBarrier.startPos)
     currentBarrier.draw(screen)
     
 def removeBarrier():
