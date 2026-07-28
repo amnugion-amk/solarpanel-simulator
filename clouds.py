@@ -5,7 +5,7 @@ import random
 
 spawnProbability = [1, 150]
 speedProbability = [5, 10]
-cloudOffset = 400
+cloudOffset = 250
 
 cloudBaseSize = (250, 100)
 cloudSizeOffset = (-25, 45)

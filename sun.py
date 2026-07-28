@@ -16,7 +16,7 @@ class sunClass():
         self.height = screenHeight
         self.image = pygame.transform.scale(
             pygame.image.load("sprites/sun.png").convert_alpha(),
-            (150, 150)
+            (200, 200)
         )
         self.rect = self.image.get_rect()
         self.startX = screenWidth
@@ -40,14 +40,7 @@ class sunClass():
             currY = self.startY + (self.endY-self.startY) * self.progress
             
             currY += -4 * self.yPeak * self.progress * (1 - self.progress)
-            bgColor = list(settings.background)
-            heightProgress = (-4 * self.yPeak * self.progress * (1 - self.progress))/self.yPeak*-1
             
-            bgColor = list(settings.background)
-            for i in range(0, 3):
-                bgColor[i] = heightProgress*settings.originalColors[i]
-            
-            settings.background = tuple(bgColor)
             self.rect.x = currX
             self.rect.y = currY
             

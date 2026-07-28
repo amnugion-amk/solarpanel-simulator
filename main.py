@@ -61,17 +61,20 @@ def checkConditions():
         solar_panel.whilePanelPlacement(screen)
     if barriers.placingBarrier:
         barriers.whileBarrierPlacement(screen)
+    
+def checkSun():
     if showingSun:
         sunObj.update(screen)
         sunObj.draw(screen)   
 while running:
     screen.fill(settings.background)
-    resources.updateObjects(screen)
-    
     checkEvents()
+    checkSun()
+    clouds.spawnCloud()
+    resources.updateObjects(screen)
     checkConditions()
     
-    clouds.spawnCloud()
+    
     controlUI.draw(screen)
     
     pygame.display.flip()

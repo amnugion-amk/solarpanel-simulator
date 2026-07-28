@@ -4,7 +4,7 @@ import solar_panel
 objects = []
 panels = []
 clouds = []
-objectTrees = [objects, panels, clouds]
+objectTrees = [clouds, objects, panels]
 
 def remove():
     barriers.removeBarrier()
