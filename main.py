@@ -4,12 +4,17 @@ import resources
 import barriers
 import settings
 import sun
+import clouds
+import controls
 
 pygame.init()
 
 screen = pygame.display.set_mode(settings.size)
 sunObj = sun.sunClass(settings.size[0], settings.size[1])
 clock = pygame.time.Clock()
+
+controlUI = controls.controlsUI()
+
 showingSun = False
 
 running = True
@@ -59,15 +64,17 @@ def checkConditions():
     if showingSun:
         sunObj.update(screen)
         sunObj.draw(screen)   
-
 while running:
-    screen.fill((settings.background))
+    screen.fill(settings.background)
     resources.updateObjects(screen)
     
     checkEvents()
     checkConditions()
     
+    clouds.spawnCloud()
+    controlUI.draw(screen)
+    
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(settings.fps)
     
 pygame.quit()

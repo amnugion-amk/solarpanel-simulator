@@ -1,5 +1,8 @@
 import pygame
 import resources
+import settings
+
+originalBackground = settings.originalColors
 
 def ccW(startPos, endPos, targetPos):
     return (endPos[0] - startPos[0]) * (targetPos[1] - startPos[1]) > (endPos[1] - startPos[1]) * (targetPos[0] - startPos[0])
@@ -25,7 +28,7 @@ class sunClass():
         self.yPeak = screenHeight
         
         self.progress = 0
-        self.speed = 0.005
+        self.speed = 0.0025
         
         self.energyAbsorbed = 0
         self.energyBlocked = 0
@@ -37,7 +40,14 @@ class sunClass():
             currY = self.startY + (self.endY-self.startY) * self.progress
             
             currY += -4 * self.yPeak * self.progress * (1 - self.progress)
+            bgColor = list(settings.background)
+            heightProgress = (-4 * self.yPeak * self.progress * (1 - self.progress))/self.yPeak*-1
             
+            bgColor = list(settings.background)
+            for i in range(0, 3):
+                bgColor[i] = heightProgress*settings.originalColors[i]
+            
+            settings.background = tuple(bgColor)
             self.rect.x = currX
             self.rect.y = currY
             
@@ -74,6 +84,7 @@ class sunClass():
         self.energyAbsorbed = 0
         self.energyBlocked = 0
         self.energyTotal = 0
+        settings.background = settings.originalColors
         
     def requestResults(self):
         if self.energyAbsorbed == 0 or self.energyTotal == 0:

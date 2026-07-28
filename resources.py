@@ -3,14 +3,13 @@ import solar_panel
 
 objects = []
 panels = []
-objectTrees = [objects, panels]
+clouds = []
+objectTrees = [objects, panels, clouds]
 
 def remove():
     barriers.removeBarrier()
     solar_panel.removePanel()
-    
-    for objectTree in objectTrees:
-        objectTree.clear()
+    objects.clear()
         
 def removeLatestBarrier():
     if len(objects) == 0: return
@@ -20,6 +19,9 @@ def removeSolarPanel():
     solar_panel.removePanel()
     
 def updateObjects(screen):
+    global clouds
+    clouds[:] = [cloud for cloud in clouds if not cloud.checkOutOfBounds()]
     for objectTree in objectTrees:
         for object in objectTree:
             object.draw(screen)
+                            

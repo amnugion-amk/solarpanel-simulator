@@ -20,7 +20,7 @@ def initiateBarrierPlacement():
     global placingBarrier, startPos, currentBarrier
     placingBarrier = True
     startPos = pygame.mouse.get_pos()
-    currentBarrier = barrier(startPos=startPos, endPos=startPos, color=(15, 15, 15), width=20)
+    currentBarrier = barrier(startPos=startPos, endPos=startPos, color=(15, 15, 15), width=15)
     
 def finalizeBarrierPlacement():
     global placingBarrier, currentBarrier
