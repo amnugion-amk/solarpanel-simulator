@@ -1,6 +1,7 @@
 import pygame
 import resources
 import settings
+import result
 
 originalBackground = settings.originalColors
 

@@ -11,7 +11,7 @@ cloudBaseSize = (250, 100)
 cloudSizeOffset = (-25, 45)
 cloudTimerOffset = (1, 6)
 
-maxClouds = 10
+maxClouds = 30
 timerEnd = settings.fps*random.randint(cloudTimerOffset[0], cloudTimerOffset[1])
 cloudSpawnTimer = timerEnd
 
@@ -19,13 +19,17 @@ class cloud:
     def __init__(self, startPos, speed, size):
         self.image = pygame.transform.scale((pygame.image.load("sprites/cloud.png").convert_alpha() ), size)
         self.rect = self.image.get_rect()
-        self.rect.x = startPos[0]
+
+        self.posX = float(startPos[0])
+
+        self.rect.x = int(self.posX)
         self.rect.y = startPos[1]
         
         self.speed = speed
         
     def draw(self, screen):
-        self.rect.x += self.speed
+        self.posX += self.speed
+        self.rect.x = int(self.posX)
         screen.blit(self.image, self.rect)
         
     

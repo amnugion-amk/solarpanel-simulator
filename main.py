@@ -6,6 +6,7 @@ import settings
 import sun
 import clouds
 import controls
+import result
 
 pygame.init()
 
@@ -16,11 +17,12 @@ clock = pygame.time.Clock()
 controlUI = controls.controlsUI()
 
 showingSun = False
+showingResult = False
 
 running = True
 
 def checkEvents():
-    global running, showingSun
+    global running, showingSun, showingResult
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -46,21 +48,25 @@ def checkEvents():
                 
             if event.key == pygame.K_e and not showingSun:
                 showingSun = True
-            elif event.key == pygame.K_e and showingSun:
+            elif event.key == pygame.K_e and showingSun and sunObj.progress >= 1:
                 showingSun = False
-                print("Solar Panel Efficiency: " + str(int(sunObj.requestResults())) + "%")
-                sunObj.reset()
                 
-                    
-                    
+                sunObj.reset()
+                showingResult = False
+                
             if event.key == pygame.K_x:
                 resources.remove()
 
+        
 def checkConditions():
     if solar_panel.placingPanel:
         solar_panel.whilePanelPlacement(screen)
     if barriers.placingBarrier:
         barriers.whileBarrierPlacement(screen)
+    if sunObj.progress >= 1:
+        result.drawText("Solar Panel Efficiency: " + str(int(sunObj.requestResults())) + "%", screen)
+    else:
+        print(sunObj.progress)
     
 def checkSun():
     if showingSun:
