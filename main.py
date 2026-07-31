@@ -1,29 +1,30 @@
 import pygame
-import solar_panel
-import resources
-import barriers
 import settings
-import sun
-import clouds
-import controls
-import result
 
 pygame.init()
 
 screen = pygame.display.set_mode(settings.size)
+
+import solar_panel
+import resources
+import barriers
+import sun
+import clouds
+import result
+import button
+import controls
+
 sunObj = sun.sunClass(settings.size[0], settings.size[1])
 clock = pygame.time.Clock()
-
-controlUI = controls.controlsUI()
 
 showingSun = False
 showingResult = False
 
 running = True
 
-def checkEvents():
+def checkEvents(events):
     global running, showingSun, showingResult
-    for event in pygame.event.get():
+    for event in events:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
@@ -65,23 +66,31 @@ def checkConditions():
         barriers.whileBarrierPlacement(screen)
     if sunObj.progress >= 1:
         result.drawText("Solar Panel Efficiency: " + str(int(sunObj.requestResults())) + "%", screen)
-    else:
-        print(sunObj.progress)
+
     
 def checkSun():
     if showingSun:
         sunObj.update(screen)
         sunObj.draw(screen)   
 while running:
+    currentEvents = pygame.event.get()
+    
     screen.fill(settings.background)
-    checkEvents()
+    
+    checkEvents(currentEvents)
     checkSun()
     clouds.spawnCloud()
     resources.updateObjects(screen)
     checkConditions()
     
+    button.controlsButton.update(currentEvents, screen)
+    button.simulationButton.update(currentEvents, screen)
+    button.helpButton.update(currentEvents, screen)
+    button.beginButton.update(currentEvents, screen)
     
-    controlUI.draw(screen)
+    controls.controlsUIObj.draw(screen)
+    result.resultBarObj.draw(screen)
+    result.textObj.draw(screen)
     
     pygame.display.flip()
     clock.tick(settings.fps)
