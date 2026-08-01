@@ -16,6 +16,9 @@ def drawText(text, screen):
     text_obj = resultFont.render(text, True, (0, 0, 0))
     screen.blit(text_obj, text_objRect)
     
+def formatEfficiency(value):
+    return "Efficiency: " + str(int(value)) + "%"
+    
 class resultBar():
     def __init__(self, pos, size, color):
         self.pos = pos
@@ -40,7 +43,7 @@ resultBarObj = resultBar(
     (255, 255, 255)
 )
 
-textObj = button.text(24, (0, 0, 0), "Efficiency: 0%", (
+textObj = button.text(24, (0, 0, 0), formatEfficiency(0), (
     resultBarObj.rect.x+resultBarObj.rect.width/2,
     resultBarObj.rect.y+resultBarObj.rect.height/2
     )

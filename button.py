@@ -1,7 +1,8 @@
 import pygame
 import controls
 import settings
-import UImanager
+import resources
+import sun
 
 screenDinmensions = settings.size
 
@@ -60,8 +61,17 @@ def onPressedControlsButton():
     print("pressed!")
     controls.controlsUIObj.enabled = not controls.controlsUIObj.enabled
     
-def onPressedSimulateButton():
-    print("pressed!")
+def onPressedDeleteAllButton():
+    resources.remove()
+    
+def onPressedHelp():
+    print("h")
+def onPressedBegin():
+    if not sun.showingSun:
+        sun.showingSun = True
+    elif sun.showingSun and sun.sunObj.progress >= 1:
+        sun.sunObj.reset()
+        sun.showingSun = True
    
 size = (80, 23)
 posOffsets = (5, -10)
@@ -75,11 +85,11 @@ controlsButton = button(
     (255, 255, 255)    
 )
 
-simulationButton = button(
+deleteAll = button(
     "Delete All",
     (0+posOffsets[0]*2+size[0], screenDinmensions[1]-size[1]+posOffsets[1]),
     size,
-    onPressedSimulateButton,
+    onPressedDeleteAllButton,
     (225, 225, 225),
     (255, 255, 255) 
 )
@@ -88,7 +98,7 @@ helpButton = button(
     "?",
     (0+posOffsets[0]*3+size[0]*2, screenDinmensions[1]-size[1]+posOffsets[1]),
     (25, 23),
-    onPressedSimulateButton,
+    onPressedHelp,
     (225, 225, 225),
     (255, 255, 255) 
 )
@@ -97,7 +107,7 @@ beginButton = button(
     "Begin",
     (screenDinmensions[0]-size[0], screenDinmensions[1]-size[1]+posOffsets[1]),
     (75, 23),
-    onPressedSimulateButton,
+    onPressedBegin,
     (225, 225, 225),
     (255, 255, 255) 
 )

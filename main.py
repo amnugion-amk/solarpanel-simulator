@@ -17,13 +17,12 @@ import controls
 sunObj = sun.sunClass(settings.size[0], settings.size[1])
 clock = pygame.time.Clock()
 
-showingSun = False
 showingResult = False
 
 running = True
 
 def checkEvents(events):
-    global running, showingSun, showingResult
+    global running, showingResult
     for event in events:
         if event.type == pygame.QUIT:
             running = False
@@ -46,14 +45,7 @@ def checkEvents(events):
             if event.key == pygame.K_s:
                 resources.removeSolarPanel()
                 
-                
-            if event.key == pygame.K_e and not showingSun:
-                showingSun = True
-            elif event.key == pygame.K_e and showingSun and sunObj.progress >= 1:
-                showingSun = False
-                
-                sunObj.reset()
-                showingResult = False
+            
                 
             if event.key == pygame.K_x:
                 resources.remove()
@@ -64,14 +56,12 @@ def checkConditions():
         solar_panel.whilePanelPlacement(screen)
     if barriers.placingBarrier:
         barriers.whileBarrierPlacement(screen)
-    if sunObj.progress >= 1:
-        result.drawText("Solar Panel Efficiency: " + str(int(sunObj.requestResults())) + "%", screen)
 
     
 def checkSun():
-    if showingSun:
-        sunObj.update(screen)
-        sunObj.draw(screen)   
+    if sun.showingSun:
+        sun.sunObj.update(screen)
+        sun.sunObj.draw(screen)   
 while running:
     currentEvents = pygame.event.get()
     
@@ -84,7 +74,7 @@ while running:
     checkConditions()
     
     button.controlsButton.update(currentEvents, screen)
-    button.simulationButton.update(currentEvents, screen)
+    button.deleteAll.update(currentEvents, screen)
     button.helpButton.update(currentEvents, screen)
     button.beginButton.update(currentEvents, screen)
     

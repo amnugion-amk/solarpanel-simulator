@@ -4,27 +4,47 @@ import UImanager
 
 screenDimensions = settings.size
 
-class controlsUI:
-    def __init__(self):
-        self.image = pygame.transform.scale((pygame.image.load("sprites/controls.png").convert_alpha()), (320, 250))
-        self.imageRect = self.image.get_rect()
-        width = self.image.get_width()
-        height = self.image.get_height()
+class basicUI:
+    def __init__(self, pos, size, color, radius=2):
+        self.currentSize = size
+        self.currentPos = pos
         
+        self.currentColor = color
+        self.radius = radius
+        
+        self.rect = None
+        self.updateRect(pos, size)
+        
+        self.enabled = True
+
+    def updateRect(self, pos, size):
         self.rect = pygame.Rect(
-            screenDimensions[0]/2-width/2,
-            screenDimensions[1]/2-height/2,
-            width,
-            height
+            pos[0],
+            pos[1],
+            size[0],
+            size[1]
         )
-        
-        self.currentColor = (255, 255, 255)
-        
-        self.enabled = False
         
     def draw(self, screen):
         if not self.enabled: return
-        pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=8)
+        self.updateRect(self.currentPos, self.currentSize)
+        pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
+
+class imageUI(basicUI):
+    def __init__(self, pos, size, color, image, imageSize, radius=2):
+        super().__init__(pos, size, color, radius)
+        self.image = pygame.transform.scale((pygame.image.load(image).convert_alpha()), imageSize)
+        self.updateRect(
+            pos,
+            (self.image.get_width(), self.image.get_height())
+        )
+    def draw(self, screen):
+        if not self.enabled: return
+        pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
         screen.blit(self.image, self.rect)
-        
-controlsUIObj = controlsUI()
+
+controlsUISize = (320, 250)
+controlsUIPos = (screenDimensions[0]/2-controlsUISize[0]/2,screenDimensions[1]/2-controlsUISize[1]/2) 
+
+controlsUIObj = imageUI(controlsUIPos, controlsUISize, (255, 255, 255), "sprites/controls.png", controlsUISize)
+controlsUIObj.enabled = False

@@ -4,6 +4,7 @@ import settings
 import result
 
 originalBackground = settings.originalColors
+showingSun = False
 
 def ccW(startPos, endPos, targetPos):
     return (endPos[0] - startPos[0]) * (targetPos[1] - startPos[1]) > (endPos[1] - startPos[1]) * (targetPos[0] - startPos[0])
@@ -11,8 +12,10 @@ def ccW(startPos, endPos, targetPos):
 def checkIntersect(a, b, c, d):
     return (ccW(a, c, d) != ccW(b, c, d)) and (ccW(a, b, c) != ccW(a, b, d))  
 
+
 class sunClass():
     def __init__(self, screenWidth, screenHeight):
+        global showingSun
         self.width = screenWidth
         self.height = screenHeight
         self.image = pygame.transform.scale(
@@ -68,7 +71,9 @@ class sunClass():
             self.energyTotal = self.energyAbsorbed + self.energyBlocked
             
             pygame.draw.line(surface, color, pointA, pointB, 3)
-                
+        elif self.progress >= 1:
+            showingSun = False
+            result.textObj.currentText = result.formatEfficiency(self.requestResults())
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
@@ -84,3 +89,5 @@ class sunClass():
         if self.energyAbsorbed == 0 or self.energyTotal == 0:
             return 0
         return (self.energyAbsorbed/self.energyTotal)*100
+
+sunObj = sunClass(settings.size[0], settings.size[1])
