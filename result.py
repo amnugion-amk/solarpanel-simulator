@@ -1,7 +1,7 @@
 import sys
 import pygame
 import settings
-import button
+import UIclasses
 
 pygame.init()
 
@@ -43,7 +43,7 @@ resultBarObj = resultBar(
     (255, 255, 255)
 )
 
-textObj = button.text(24, (0, 0, 0), formatEfficiency(0), (
+textObj = UIclasses.text(24, (0, 0, 0), formatEfficiency(0), (
     resultBarObj.rect.x+resultBarObj.rect.width/2,
     resultBarObj.rect.y+resultBarObj.rect.height/2
     )

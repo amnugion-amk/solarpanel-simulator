@@ -26,14 +26,14 @@ def initiatePanelPlacement():
     startPos = pygame.mouse.get_pos()
     currentPanel = solarPanel(startPos=startPos, endPos=startPos, color=(3, 44, 255), width=10)
     
-def finalizePanelPlacement(panel):
+def finalizePanelPlacement():
     global placingPanel
     placingPanel = False
     resources.panels.append(currentPanel)
     
-    panel.centerPos = (
-        panel.startPos[0] + (panel.endPos[0]-panel.startPos[0]) * 0.5,
-        panel.startPos[1] + (panel.endPos[1]-panel.startPos[1]) * 0.5
+    currentPanel.centerPos = (
+        currentPanel.startPos[0] + (currentPanel.endPos[0]-currentPanel.startPos[0]) * 0.5,
+        currentPanel.startPos[1] + (currentPanel.endPos[1]-currentPanel.startPos[1]) * 0.5
     )
     
 def whilePanelPlacement(screen):

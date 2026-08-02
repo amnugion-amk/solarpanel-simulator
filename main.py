@@ -28,27 +28,20 @@ def checkEvents(events):
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r and not solar_panel.placingPanel and len(resources.panels)<1:
-                solar_panel.initiatePanelPlacement()
-            elif event.key == pygame.K_r and solar_panel.placingPanel and len(resources.panels)<1:
-                solar_panel.finalizePanelPlacement(solar_panel.currentPanel)
-                
-                
+                solar_panel.initiatePanelPlacement()                    
             if event.key == pygame.K_b and not barriers.placingBarrier:
                 barriers.initiateBarrierPlacement()
-            elif event.key == pygame.K_b and barriers.placingBarrier:
-                barriers.finalizeBarrierPlacement()
-                
                 
             if event.key == pygame.K_z:
                 resources.removeLatestBarrier()
-                
             if event.key == pygame.K_s:
                 resources.removeSolarPanel()
                 
-            
-                
-            if event.key == pygame.K_x:
-                resources.remove()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if solar_panel.placingPanel and len(resources.panels) < 1:
+                solar_panel.finalizePanelPlacement()
+            if barriers.placingBarrier:
+                barriers.finalizeBarrierPlacement()
 
         
 def checkConditions():
@@ -78,7 +71,9 @@ while running:
     button.helpButton.update(currentEvents, screen)
     button.beginButton.update(currentEvents, screen)
     
-    controls.controlsUIObj.draw(screen)
+    controls.controlsUIObj.draw(currentEvents, screen)
+    controls.helpUIObj.draw(currentEvents, screen)
+    
     result.resultBarObj.draw(screen)
     result.textObj.draw(screen)
     
