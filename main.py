@@ -10,15 +10,12 @@ import resources
 import barriers
 import sun
 import clouds
-import result
+import UImanager
 import button
-import controls
 
-sunObj = sun.sunClass(settings.size[0], settings.size[1])
 clock = pygame.time.Clock()
 
 showingResult = False
-
 running = True
 
 def checkEvents(events):
@@ -66,16 +63,7 @@ while running:
     resources.updateObjects(screen)
     checkConditions()
     
-    button.controlsButton.update(currentEvents, screen)
-    button.deleteAll.update(currentEvents, screen)
-    button.helpButton.update(currentEvents, screen)
-    button.beginButton.update(currentEvents, screen)
-    
-    controls.controlsUIObj.draw(currentEvents, screen)
-    controls.helpUIObj.draw(currentEvents, screen)
-    
-    result.resultBarObj.draw(screen)
-    result.textObj.draw(screen)
+    UImanager.drawAll(screen, currentEvents)
     
     pygame.display.flip()
     clock.tick(settings.fps)

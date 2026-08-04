@@ -1,22 +1,22 @@
 import pygame
-import controls
+import menus
 import settings
 import resources
 import sun
 import UIclasses
+import UImanager
 
 screenDinmensions = settings.size
-
         
 def onPressedControlsButton():
     print("pressed!")
-    controls.controlsUIObj.enabled = not controls.controlsUIObj.enabled
+    menus.controlsUIObj.enabled = not menus.controlsUIObj.enabled
     
 def onPressedDeleteAllButton():
     resources.remove()
     
 def onPressedHelp():
-    controls.helpUIObj.enabled = not controls.helpUIObj.enabled
+    menus.helpUIObj.enabled = not menus.helpUIObj.enabled
 def onPressedBegin():
     if not sun.showingSun:
         sun.showingSun = True
@@ -35,8 +35,9 @@ controlsButton = UIclasses.button(
     (225, 225, 225),
     (255, 255, 255)    
 )
+UImanager.buttons.append(controlsButton)
 
-deleteAll = UIclasses.button(
+deleteAllButton = UIclasses.button(
     "Delete All",
     (0+posOffsets[0]*2+size[0], screenDinmensions[1]-size[1]+posOffsets[1]),
     size,
@@ -44,7 +45,7 @@ deleteAll = UIclasses.button(
     (225, 225, 225),
     (255, 255, 255) 
 )
-
+UImanager.buttons.append(deleteAllButton)
 helpButton = UIclasses.button(
     "?",
     (0+posOffsets[0]*3+size[0]*2, screenDinmensions[1]-size[1]+posOffsets[1]),
@@ -53,6 +54,7 @@ helpButton = UIclasses.button(
     (225, 225, 225),
     (255, 255, 255) 
 )
+UImanager.buttons.append(helpButton)
 
 beginButton = UIclasses.button(
     "Begin",
@@ -62,3 +64,6 @@ beginButton = UIclasses.button(
     (225, 225, 225),
     (255, 255, 255) 
 )
+UImanager.buttons.append(beginButton)
+
+print("hi")

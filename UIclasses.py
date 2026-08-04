@@ -3,7 +3,7 @@ import pygame
 font = pygame.font.Font(None, 24)
 
 
-class text():
+class textLabel():
     def __init__(self, fontSize, color, text, anchorPoint):
         self.font = pygame.font.Font(None, fontSize)
         self.currentColor = color
@@ -14,7 +14,7 @@ class text():
         self.textRect.center = anchorPoint
         
     def draw(self, screen):
-        self.textSurface = font.render(self.currentText, True, self.currentColor)
+        self.textSurface = self.font.render(self.currentText, True, self.currentColor)
         screen.blit(self.textSurface, self.textRect)
 
 class button():
@@ -31,7 +31,7 @@ class button():
         self.currentColor = self.colorNormal
         
         self.textString = textString
-        self.textLabel = text(24, (0, 0, 0,), self.textString, self.rect.center)
+        self.textLabel = textLabel(24, (0, 0, 0,), self.textString, self.rect.center)
         
         self.isMouseHovering = False
         
@@ -80,7 +80,7 @@ class basicUI:
         self.enabled = False
         
         
-    def draw(self, events, screen):
+    def update(self, events, screen):
         if not self.enabled: return
         self.updateRect(self.currentPos, self.currentSize)
         pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
@@ -94,8 +94,20 @@ class imageUI(basicUI):
             pos,
             (self.image.get_width(), self.image.get_height())
         )
-    def draw(self, events, screen):
+    def update(self, events, screen):
         if not self.enabled: return
         pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
         screen.blit(self.image, self.rect)
         self.exitButton.update(events, screen)
+        
+class textRect(basicUI):
+    def __init__(self, pos, size, color, text, fontSize = 24, fontColor = (0, 0, 0), radius=2):
+        super().__init__(pos, size, color, radius)
+        self.exitButton = None
+        self.textLabel = textLabel(fontSize, fontColor, text, self.rect.center)
+        
+    def update(self, events, screen):
+        if not self.enabled: return
+        self.updateRect(self.currentPos, self.currentSize)
+        pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
+        self.textLabel.draw(screen)

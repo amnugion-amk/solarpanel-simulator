@@ -73,7 +73,7 @@ class sunClass():
             pygame.draw.line(surface, color, pointA, pointB, 3)
         elif self.progress >= 1:
             showingSun = False
-            result.textObj.currentText = result.formatEfficiency(self.requestResults())
+            result.resultBarObj.textLabel.currentText = result.formatEfficiency(self.requestResults())
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
