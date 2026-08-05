@@ -2,6 +2,7 @@ import pygame
 
 menus = []
 buttons = []
+background = None
 
 UIs = [buttons, menus]
 

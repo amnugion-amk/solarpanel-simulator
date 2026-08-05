@@ -2,6 +2,7 @@ import pygame
 import resources
 import settings
 import result
+import math
 
 originalBackground = settings.originalColors
 showingSun = False
@@ -27,7 +28,6 @@ class sunClass():
         self.endX = -65
         
         self.startY = screenHeight
-        self.endY = screenHeight
         
         self.yPeak = screenHeight
         
@@ -40,26 +40,24 @@ class sunClass():
         
     def update(self, surface):
         if self.progress <= 1:
-            currX = self.startX + (self.endX-self.startX) * self.progress
-            currY = self.startY + (self.endY-self.startY) * self.progress
-            
-            currY += -4 * self.yPeak * self.progress * (1 - self.progress)
+            currX = self.startX + (self.endX-self.startX) * self.progress            
+            currY = self.startY - math.sin(self.progress*math.radians(180))*self.yPeak
             
             self.rect.x = currX
             self.rect.y = currY
             
             self.progress += self.speed
+            
             if len(resources.panels) < 1: return
             pointA = self.rect.center
             pointB = resources.panels[0].centerPos
             
             pathBlocked = False
             
-            if len(resources.objects) >= 1:
-                for barrier in resources.objects:
-                    if (checkIntersect(pointA, pointB, barrier.startPos, barrier.endPos)):
-                        pathBlocked = True
-                        break
+            for barrier in resources.objects:
+                if (checkIntersect(pointA, pointB, barrier.startPos, barrier.endPos)):
+                    pathBlocked = True
+                    break
             
             color = None
             if pathBlocked:

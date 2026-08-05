@@ -1,7 +1,5 @@
 import pygame
-
-font = pygame.font.Font(None, 24)
-
+import settings
 
 class textLabel():
     def __init__(self, fontSize, color, text, anchorPoint):
@@ -9,12 +7,15 @@ class textLabel():
         self.currentColor = color
         self.currentText = text
         
-        self.textSurface = font.render(self.currentText, True, self.currentColor)
+        self.textSurface = self.font.render(self.currentText, True, self.currentColor)
         self.textRect = self.textSurface.get_rect()
         self.textRect.center = anchorPoint
+        self.previousText = None
         
     def draw(self, screen):
-        self.textSurface = self.font.render(self.currentText, True, self.currentColor)
+        if self.currentText != self.previousText:
+            self.textSurface = self.font.render(self.currentText, True, self.currentColor)
+            self.previousText = self.currentText
         screen.blit(self.textSurface, self.textRect)
 
 class button():
@@ -31,10 +32,7 @@ class button():
         self.currentColor = self.colorNormal
         
         self.textString = textString
-        self.textLabel = textLabel(24, (0, 0, 0,), self.textString, self.rect.center)
-        
-        self.isMouseHovering = False
-        
+        self.textLabel = textLabel(24, (0, 0, 0,), self.textString, self.rect.center)        
         
         
     def draw(self, screen, isColliding):
@@ -111,3 +109,17 @@ class textRect(basicUI):
         self.updateRect(self.currentPos, self.currentSize)
         pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
         self.textLabel.draw(screen)
+        
+class backgroundUI():
+    def __init__(self, image):
+        self._currentImage = pygame.transform.scale(pygame.image.load(image), settings.size).convert_alpha()
+        self.enabled = True
+        
+        self.rect = self._currentImage.get_rect()
+    
+    def changeBackground(self, image):
+        self._currentImage = pygame.transform.scale(pygame.image.load(image), settings.size).convert_alpha()
+    
+    def update(self, screen):
+        if not self.enabled: return
+        screen.blit(self._currentImage, self.rect)

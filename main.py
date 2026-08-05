@@ -12,6 +12,7 @@ import sun
 import clouds
 import UImanager
 import button
+import background
 
 clock = pygame.time.Clock()
 
@@ -56,7 +57,7 @@ while running:
     currentEvents = pygame.event.get()
     
     screen.fill(settings.background)
-    
+        
     checkEvents(currentEvents)
     checkSun()
     clouds.spawnCloud()
