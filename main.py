@@ -14,6 +14,8 @@ import UImanager
 import button
 import background
 
+import degreesTool
+
 clock = pygame.time.Clock()
 
 showingResult = False
@@ -34,6 +36,10 @@ def checkEvents(events):
                 resources.removeLatestBarrier()
             if event.key == pygame.K_s:
                 resources.removeSolarPanel()
+
+
+            if event.key == pygame.K_d:
+                degreesTool.placeLines()
                 
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if solar_panel.placingPanel and len(resources.panels) < 1:
@@ -41,12 +47,23 @@ def checkEvents(events):
             if barriers.placingBarrier:
                 barriers.finalizeBarrierPlacement()
 
+            if degreesTool.placingLineA:
+                degreesTool.finalizeLineA()
+                degreesTool.placeLines()
+            elif degreesTool.placingLineB:
+                degreesTool.finalizeLineB()
+
         
 def checkConditions():
     if solar_panel.placingPanel:
         solar_panel.whilePanelPlacement(screen)
     if barriers.placingBarrier:
         barriers.whileBarrierPlacement(screen)
+
+    if degreesTool.placingLineA:
+        degreesTool.whilstPlacingLineA()
+    if degreesTool.placingLineB:
+        degreesTool.whilstPlacingLineB()
 
     
 def checkSun():

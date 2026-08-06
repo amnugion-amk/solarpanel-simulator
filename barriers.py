@@ -1,6 +1,7 @@
 import pygame
 import resources
 
+
 placingBarrier = False
 startPos = ((0, 0))
 currentBarrier = None

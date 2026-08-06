@@ -1,14 +1,18 @@
 import barriers
 import solar_panel
+import degreesTool
 
 objects = []
+invisObjects = []
 panels = []
 clouds = []
-objectTrees = [clouds, objects, panels]
+objectTrees = [clouds, objects, panels, invisObjects]
 
 def remove():
     barriers.removeBarrier()
     solar_panel.removePanel()
+    invisObjects.clear()
+    degreesTool.reset()
     objects.clear()
         
 def removeLatestBarrier():
