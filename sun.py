@@ -29,13 +29,13 @@ class sunClass():
         
         self.startY = screenHeight
         
-        self.yPeak = screenHeight
+        self.yPeak = screenHeight + self.rect.height
         
         self.progress = 0
         self.speed = 0.0025
         
         self.energyAbsorbed = 0
-        self.energyBlocked = 0
+                
         self.energyTotal = 0
         
     def update(self, surface):
@@ -52,23 +52,22 @@ class sunClass():
             pointA = self.rect.center
             pointB = resources.panels[0].centerPos
             
+            lineColor = (0, 255, 0) 
             pathBlocked = False
+            energyBlockedModifier = 0
             
-            for barrier in resources.objects:
-                if (checkIntersect(pointA, pointB, barrier.startPos, barrier.endPos)):
-                    pathBlocked = True
-                    break
             
-            color = None
-            if pathBlocked:
-                self.energyBlocked += 1
-                color = (255, 0, 0) 
-            else:
-                self.energyAbsorbed += 1
-                color = (0, 255, 0)
-            self.energyTotal = self.energyAbsorbed + self.energyBlocked
-            
-            pygame.draw.line(surface, color, pointA, pointB, 3)
+            for sunlightBlocked, blockerTree in resources.blockers.items():
+                for blocker in blockerTree:
+                    if (checkIntersect(pointA, pointB, blocker.startPos, blocker.endPos)):
+                        pathBlocked = True
+                        energyBlockedModifier = sunlightBlocked 
+                        lineColor = (255, 0, 0) 
+                        
+                        break
+            self.energyTotal += 1        
+            self.energyAbsorbed += 1-energyBlockedModifier
+            pygame.draw.line(surface, lineColor, pointA, pointB, 3)
         elif self.progress >= 1:
             showingSun = False
             result.resultBarObj.textLabel.currentText = result.formatEfficiency(self.requestResults())
@@ -84,7 +83,7 @@ class sunClass():
         settings.background = settings.originalColors
         
     def requestResults(self):
-        if self.energyAbsorbed == 0 or self.energyTotal == 0:
+        if self.energyTotal == 0:
             return 0
         return (self.energyAbsorbed/self.energyTotal)*100
 

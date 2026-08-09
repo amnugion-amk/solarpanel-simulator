@@ -5,6 +5,11 @@ objects = []
 panels = []
 clouds = []
 objectTrees = [clouds, objects, panels]
+blockers = {
+    0.25 : clouds,
+    1 : objects
+    # blocker tree : % cahaya hilang    
+}
 
 def remove():
     barriers.removeBarrier()

@@ -27,9 +27,29 @@ class cloud:
         
         self.speed = speed
         
+        self.updateEdges()
+        
+    def lerpEdges(self, x, y): # jika x & y 0, maka akan berada di titik awalnya rect (top left)
+        #                        jika x & y 1, maka akan berada di titik akhirnya rect (bottom right)
+        #                        jika x & y 0.5, maka akan berada di titik tengahnya rect
+        
+        xOffset = self.rect.width * x
+        yOffset = self.rect.height * y
+        
+        return (
+            self.rect.x + xOffset,
+            self.rect.y + yOffset
+        )
+        
+    def updateEdges(self):
+        self.startPos = self.lerpEdges(0, .75)#(0, 800)
+        self.endPos = self.lerpEdges(1, .75)#(1920, 800)
+        
     def draw(self, screen):
         self.posX += self.speed
         self.rect.x = int(self.posX)
+        self.updateEdges()
+
         screen.blit(self.image, self.rect)
         
     
