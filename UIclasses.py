@@ -62,6 +62,7 @@ class basicUI:
         self.updateRect(pos, size)
         
         self.enabled = True
+        self.hasExit = True
         
         
         self.exitButton = button("X", self.rect, (15, 15), self.exitUI, (225, 225, 225), (255, 255, 255))
@@ -82,7 +83,7 @@ class basicUI:
         if not self.enabled: return
         self.updateRect(self.currentPos, self.currentSize)
         pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=self.radius)
-        self.exitButton.update(events, screen)
+        if self.hasExit: self.exitButton.update(events, screen)
 
 class imageUI(basicUI):
     def __init__(self, pos, size, color, image, imageSize, radius=2):
@@ -123,3 +124,47 @@ class backgroundUI():
     def update(self, screen):
         if not self.enabled: return
         screen.blit(self._currentImage, self.rect)
+class checkboxUI(button):
+    def __init__(self, pos, size, checkboxName, colorOnHover=(225, 225, 225), colorNormal=(255, 255, 255)):
+        super().__init__(" ", pos, size, self.switch, colorOnHover, colorNormal)
+        self.ticked = False
+        self.onPressed = self.switch
+        
+        self.rect.height = 18
+        self.textLabel.textRect.height
+        
+        self.checkboxTitle = textLabel(24, (0, 0, 0), checkboxName, (0, 0))
+        self.mainRectSize = (
+            self.checkboxTitle.textRect.width+size[0],
+            18
+        ) 
+        
+        self.mainRect = basicUI(pos, self.mainRectSize, (255, 255, 255))
+        self.checkboxTitle.textRect.center = (
+            self.mainRect.rect.x+self.checkboxTitle.textRect.width/2,
+            self.mainRect.rect.y+self.checkboxTitle.textRect.height/2
+        )
+        
+        self.rect.x = self.checkboxTitle.textRect.centerx+self.checkboxTitle.textRect.width/2
+        self.rect.y = pos[1]
+        
+        self.mainRect.hasExit = False
+        
+        self.textLabel.textRect.center = self.rect.center
+        
+    
+    def switch(self):
+        self.ticked = not self.ticked
+        self.textLabel.currentText = "O" if self.ticked else " "
+        
+    def update(self, events, screen):
+            mousePos = pygame.mouse.get_pos()
+            isColliding = self.rect.collidepoint(mousePos)
+            
+            self.mainRect.update(events, screen)
+            self.draw(screen, isColliding)
+            self.checkboxTitle.draw(screen)
+            
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and isColliding:
+                    self.onPressed()

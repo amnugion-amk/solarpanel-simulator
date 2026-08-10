@@ -3,6 +3,7 @@ import resources
 import settings
 import result
 import math
+import button
 
 originalBackground = settings.originalColors
 showingSun = False
@@ -56,8 +57,8 @@ class sunClass():
             pathBlocked = False
             energyBlockedModifier = 0
             
-            
             for sunlightBlocked, blockerTree in resources.blockers.items():
+                if blockerTree == resources.clouds and not button.toggleClouds.ticked: continue
                 for blocker in blockerTree:
                     if (checkIntersect(pointA, pointB, blocker.startPos, blocker.endPos)):
                         pathBlocked = True

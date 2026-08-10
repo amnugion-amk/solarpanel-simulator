@@ -66,4 +66,15 @@ beginButton = UIclasses.button(
 )
 UImanager.buttons.append(beginButton)
 
+toggleClouds = UIclasses.checkboxUI(
+    pos=(
+        controlsButton.pos[0],
+        controlsButton.pos[1] + posOffsets[1]*4
+    ),
+    size=(25, 25),
+    checkboxName="Clouds Affect Light"
+
+)
+UImanager.buttons.append(toggleClouds)
+
 print("hi")
