@@ -11,9 +11,14 @@ cloudBaseSize = (250, 100)
 cloudSizeOffset = (-25, 45)
 cloudTimerOffset = (1, 6)
 
+def calculatetimerEnd():
+    settings.fps*random.randint(cloudTimerOffset[0], cloudTimerOffset[1])
+
 maxClouds = 30
-timerEnd = settings.fps*random.randint(cloudTimerOffset[0], cloudTimerOffset[1])
+timerEnd = calculatetimerEnd()
 cloudSpawnTimer = timerEnd
+
+
 
 class cloud:
     def __init__(self, startPos, speed, size):
@@ -53,6 +58,6 @@ def spawnCloud():
                 )
             )
         cloudSpawnTimer = 0
-        timerEnd = settings.fps*random.randint(cloudTimerOffset[0], cloudTimerOffset[1])
+        timerEnd = calculatetimerEnd()
     else:
         cloudSpawnTimer += 1
