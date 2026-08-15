@@ -3,7 +3,6 @@ import renderService
 import settings
 import customMath
 import result
-import UIs
 
 screenSize = settings.screenSize
 physicsObjectStorage = renderService.physicsObjectsStorage
@@ -94,7 +93,7 @@ class sun():
         self.progress = 0
         self.showingSun = False
         
-        UIs.resultBarObj.textLabel.currentText = result.formatResults(self.requestResults())
+        result.resultBarObj.textLabel.currentText = result.formatResults(self.requestResults())
         
         self.total = 0
         self.blocked = 0
@@ -111,5 +110,5 @@ class sun():
     def requestResults(self):
         absorbed = self.total-self.blocked
         return absorbed/self.total*100 if self.total != 0 else 0
-
     
+physicsObjectStorage.sun.append(sun())

@@ -7,7 +7,9 @@ screen = pygame.display.set_mode(settings.screenSize)
 import renderService
 import solarPanel
 import barrier
+import physicsObjects
 import UIs
+import clouds
 
 running = True
 clock = pygame.time.Clock()
@@ -42,7 +44,7 @@ def checkEvents(events):
 while running:
     events = pygame.event.get()
     checkEvents(events)
-    
+    clouds.spawnCloud()
     renderService.renderer.renderAll(screen, events)
     clock.tick(settings.fps)
             

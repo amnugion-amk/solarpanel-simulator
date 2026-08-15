@@ -25,17 +25,6 @@ helpUIObj = UIClasses.imageUI(helpUIPos, helpUISize, (255, 255, 255), "sprites/h
 
 UIObjectsStorage.menus.append(controlsUIObj)
 UIObjectsStorage.menus.append(helpUIObj)
-
-barSize = (240, 23)
-
-resultBarObj = UIClasses.textRect(
-    (findCenterPos(barSize)[0], screenDinmensions[1]-barSize[1]-10),
-    barSize,
-    (255, 255, 255),
-    result.formatResults(0)
-)
-
-UIObjectsStorage.texts.append(resultBarObj)
         
 def findBottomYPosition(size, offset):
     return screenDinmensions[1]-size[1]-offset
