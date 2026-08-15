@@ -7,13 +7,13 @@ screen = pygame.display.set_mode(settings.screenSize)
 import renderService
 import solarPanel
 import barrier
+import UIs
 
 running = True
 clock = pygame.time.Clock()
 
-def checkEvents():
+def checkEvents(events):
     global running
-    events = pygame.event.get()
     
     for event in events:
         if event.type == pygame.QUIT:
@@ -40,8 +40,10 @@ def checkEvents():
         barrier.whilePlacement()
 
 while running:
-    checkEvents()
-    renderService.renderer.renderAll(screen)
+    events = pygame.event.get()
+    checkEvents(events)
+    
+    renderService.renderer.renderAll(screen, events)
     clock.tick(settings.fps)
             
 pygame.quit()

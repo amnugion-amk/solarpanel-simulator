@@ -7,11 +7,11 @@ class rendererClass():
     def __init__(self, objectStorages):
         self.objectStorages = objectStorages
         
-    def renderAll(self, screen):
+    def renderAll(self, screen, events):
         screen.fill(bgColor)
         
         for objectStorage in self.objectStorages:
-            objectStorage.render(screen)
+            objectStorage.render(screen, events)
             
         pygame.display.flip()    
         
@@ -19,7 +19,7 @@ class objectStorage_SuperClass():
     def __init__(self):
         self.renderQueue = []
         
-    def render(self, screen):
+    def render(self, screen, events):
         for objectType in self.renderQueue:
             if isinstance(objectType, list):
                 for object in objectType:
@@ -34,6 +34,12 @@ class UIObjects(objectStorage_SuperClass):
         
         self.renderQueue = [self.menus, self.texts, self.buttons]
         
+    def render(self, screen, events):
+            for objectType in self.renderQueue:
+                if isinstance(objectType, list):
+                    for object in objectType:
+                        object.render(screen, events)
+        
 class physicsObjects(objectStorage_SuperClass):
     def __init__(self):
         super().__init__()
@@ -43,6 +49,10 @@ class physicsObjects(objectStorage_SuperClass):
         self.sun = []
         
         self.renderQueue = [self.sun, self.clouds, self.barriers, self.solarPanel]
+        
+    def destroyAll(self):
+        self.barriers.clear()
+        self.solarPanel.clear()
 
 UIObjectsStorage = UIObjects()
 physicsObjectsStorage = physicsObjects()
