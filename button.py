@@ -8,8 +8,10 @@ import UImanager
 
 screenDinmensions = settings.size
         
+def findBottomYPosition(size, offset):
+    return screenDinmensions[1]-size[1]-offset
+        
 def onPressedControlsButton():
-    print("pressed!")
     menus.controlsUIObj.enabled = not menus.controlsUIObj.enabled
     
 def onPressedDeleteAllButton():
@@ -25,11 +27,11 @@ def onPressedBegin():
         sun.showingSun = True
    
 size = (80, 23)
-posOffsets = (5, -10)
+posOffsets = (5, 10)
     
 controlsButton = UIclasses.button(
     "Controls",
-    (0+posOffsets[0], screenDinmensions[1]-size[1]+posOffsets[1]),
+    (posOffsets[0], findBottomYPosition(size, posOffsets[1])),
     size,
     onPressedControlsButton,
     (225, 225, 225),
@@ -39,7 +41,7 @@ UImanager.UIs.append(controlsButton)
 
 deleteAllButton = UIclasses.button(
     "Delete All",
-    (0+posOffsets[0]*2+size[0], screenDinmensions[1]-size[1]+posOffsets[1]),
+    (posOffsets[0]*2+size[0], findBottomYPosition(size, posOffsets[1])),
     size,
     onPressedDeleteAllButton,
     (225, 225, 225),
@@ -48,7 +50,7 @@ deleteAllButton = UIclasses.button(
 UImanager.UIs.append(deleteAllButton)
 helpButton = UIclasses.button(
     "?",
-    (0+posOffsets[0]*3+size[0]*2, screenDinmensions[1]-size[1]+posOffsets[1]),
+    (posOffsets[0]*3+size[0]*2, findBottomYPosition(size, posOffsets[1])),
     (25, 23),
     onPressedHelp,
     (225, 225, 225),
@@ -58,12 +60,10 @@ UImanager.UIs.append(helpButton)
 
 beginButton = UIclasses.button(
     "Begin",
-    (screenDinmensions[0]-size[0], screenDinmensions[1]-size[1]+posOffsets[1]),
+    (screenDinmensions[0]-size[0], findBottomYPosition(size, posOffsets[1])),
     (75, 23),
     onPressedBegin,
     (225, 225, 225),
     (255, 255, 255) 
 )
 UImanager.UIs.append(beginButton)
-
-print("hi")

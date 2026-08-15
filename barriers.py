@@ -32,7 +32,7 @@ def whileBarrierPlacement(screen):
     currentBarrier.endPos = pygame.mouse.get_pos()
     currentBarrier.draw(screen)
     
-def removeBarrier():
+def resetBarrierSettings():
     global placingBarrier, startPos, currentBarrier
     
     placingBarrier = False

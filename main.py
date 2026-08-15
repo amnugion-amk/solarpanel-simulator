@@ -12,7 +12,6 @@ import sun
 import clouds
 import UImanager
 import button
-import background
 
 clock = pygame.time.Clock()
 

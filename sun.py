@@ -4,7 +4,6 @@ import settings
 import result
 import math
 
-originalBackground = settings.originalColors
 showingSun = False
 
 def ccW(startPos, endPos, targetPos):
@@ -23,8 +22,7 @@ def checkIntersect(a, b, c, d):
 class sunClass():
     def __init__(self, screenWidth, screenHeight):
         global showingSun
-        self.width = screenWidth
-        self.height = screenHeight
+
         self.image = pygame.transform.scale(
             pygame.image.load("sprites/sun.png").convert_alpha(),
             (200, 200)
@@ -87,7 +85,6 @@ class sunClass():
         self.energyAbsorbed = 0
         self.energyBlocked = 0
         self.energyTotal = 0
-        settings.background = settings.originalColors
         
     def requestResults(self):
         if self.energyAbsorbed == 0 or self.energyTotal == 0:

@@ -9,13 +9,8 @@ class solarPanel():
     def __init__(self, startPos, endPos, color=(255, 255, 255), width=10):
         self.startPos = startPos
         self.endPos = endPos
-        self.centerPos = (
-            startPos[0] + (endPos[0]-startPos[0]) * 0.5,
-            startPos[1] + (endPos[1]-startPos[1]) * 0.5
-        )
         self.color = color
         self.width = width
-        pass
     
     def draw(self, surface):
         pygame.draw.line(surface, self.color, self.startPos, self.endPos, self.width)

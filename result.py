@@ -1,4 +1,5 @@
 import pygame
+import menus
 
 import UIclasses
 import settings
@@ -11,8 +12,9 @@ def formatEfficiency(value):
     return "Efficiency: " + str(int(value)) + "%"
     
 barSize = (240, 23)
+
 resultBarObj = UIclasses.textRect(
-    (screenDimensions[0]/2-barSize[0]/2, screenDimensions[1]-barSize[1]-10),
+    (menus.findCenterPos(barSize)[0], screenDimensions[1]-barSize[1]-10),
     barSize,
     (255, 255, 255),
     formatEfficiency(0)

@@ -7,7 +7,7 @@ clouds = []
 objectTrees = [clouds, objects, panels]
 
 def remove():
-    barriers.removeBarrier()
+    barriers.resetBarrierSettings()
     solar_panel.removePanel()
     objects.clear()
         
@@ -19,7 +19,6 @@ def removeSolarPanel():
     solar_panel.removePanel()
     
 def updateObjects(screen):
-    global clouds
     clouds[:] = [cloud for cloud in clouds if not cloud.checkOutOfBounds()]
     for objectTree in objectTrees:
         for object in objectTree:
