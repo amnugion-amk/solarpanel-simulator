@@ -30,8 +30,7 @@ class UIObjects(objectStorage_SuperClass):
         super().__init__()
         self.menus = []
         self.buttons = []
-        self.texts = []
-        
+        self.texts = []        
         self.renderQueue = [self.menus, self.texts, self.buttons]
         
     def render(self, screen, events):

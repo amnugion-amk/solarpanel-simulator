@@ -11,7 +11,7 @@ def checkSolarPanel():
 def initPlacement():
     if checkSolarPanel(): return
     
-    global currentPanel, placingPanel
+    global placingPanel
     startPos = pygame.mouse.get_pos()
     
     physicsObjectStorage.solarPanel.append(physicsObjects.line(startPos, startPos, (0, 0, 255), 10))
