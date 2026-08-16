@@ -112,3 +112,30 @@ class sun():
         return absorbed/self.total*100 if self.total != 0 else 0
     
 physicsObjectStorage.sun.append(sun())
+
+class cloud:
+    def __init__(self, startPos, speed, size):
+        self.image = pygame.transform.scale((pygame.image.load("sprites/cloud.png").convert_alpha() ), size)
+        self.rect = self.image.get_rect()
+        
+        self.currentXpPosition = float(startPos[0])
+        
+        self.rect.x = startPos[0]
+        self.rect.y = startPos[1]
+        
+        self.putInsideDeleteList = False
+        
+        self.speed = speed
+        
+    def render(self, screen):
+        self.currentXpPosition += self.speed
+        self.rect.x = int(self.currentXpPosition)
+        screen.blit(self.image, self.rect)
+        if self.checkOutOfBounds() and not self.putInsideDeleteList:
+            self.putInsideDeleteList = True
+            physicsObjectStorage.cloudsDeleteList.append(self)
+            
+    def checkOutOfBounds(self):
+            if self.rect.x > settings.screenSize[0]:
+                return True
+            return False

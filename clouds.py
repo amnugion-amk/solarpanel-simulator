@@ -2,8 +2,9 @@ import pygame
 import settings
 import renderService
 import random
+import physicsObjects
 
-physicsObjectsStorage = renderService.physicsObjectsStorage
+physicsObjectStorage = renderService.physicsObjectsStorage
 
 spawnProbability = [1, 150]
 speedProbability = [5, 10]
@@ -19,33 +20,13 @@ def calculatetimerEnd():
 maxClouds = 30
 timerEnd = calculatetimerEnd()
 cloudSpawnTimer = timerEnd
-
-class cloud:
-    def __init__(self, startPos, speed, size):
-        self.image = pygame.transform.scale((pygame.image.load("sprites/cloud.png").convert_alpha() ), size)
-        self.rect = self.image.get_rect()
-        self.rect.x = startPos[0]
-        self.rect.y = startPos[1]
-        
-        self.speed = speed
-        
-    def render(self, screen):
-        self.rect.x += self.speed
-        screen.blit(self.image, self.rect)
-        if self.checkOutOfBounds():
-            physicsObjectsStorage.clouds.remove(self)
-    
-    def checkOutOfBounds(self):
-        if self.rect.x > settings.screenSize[0]:
-            return True
-        return False
             
 def spawnCloud():
     global cloudSpawnTimer, timerEnd
-    if len(physicsObjectsStorage.clouds) >= maxClouds: return
+    if len(physicsObjectStorage.clouds) >= maxClouds: return
     if cloudSpawnTimer >= timerEnd:
-        physicsObjectsStorage.clouds.append(
-            cloud(
+        physicsObjectStorage.clouds.append(
+            physicsObjects.cloud(
                 (-cloudBaseSize[0], random.randint(0, cloudOffset)),
                 random.randint(speedProbability[0], speedProbability[1])/10,
                 (

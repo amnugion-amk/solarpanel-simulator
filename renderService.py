@@ -43,15 +43,27 @@ class physicsObjects(objectStorage_SuperClass):
     def __init__(self):
         super().__init__()
         self.barriers = []
-        self.clouds = []
         self.solarPanel = []
         self.sun = []
+        
+        self.clouds = []
+        self.cloudsDeleteList = []
         
         self.renderQueue = [self.sun, self.clouds, self.barriers, self.solarPanel]
         
     def destroyAll(self):
         self.barriers.clear()
         self.solarPanel.clear()
+        
+    def render(self, screen, events):
+                for cloud in self.cloudsDeleteList:
+                    if not cloud in self.clouds: continue
+                    self.clouds.remove(cloud)
+
+                for objectType in self.renderQueue:
+                    if isinstance(objectType, list):
+                        for object in objectType:
+                            object.render(screen)
 
 UIObjectsStorage = UIObjects()
 physicsObjectsStorage = physicsObjects()

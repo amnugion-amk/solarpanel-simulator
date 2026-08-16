@@ -44,7 +44,7 @@ size = (80, 23)
 posOffsets = (5, 10)
     
 controlsButton = UIClasses.button(
-    "Controls",
+    "Kontrol",
     (posOffsets[0], findBottomYPosition(size, posOffsets[1])),
     size,
     onPressedControlsButton,
@@ -53,10 +53,11 @@ controlsButton = UIClasses.button(
 )
 UIObjectsStorage.buttons.append(controlsButton)
 
+deleteAllSize = (130, 23)
 deleteAllButton = UIClasses.button(
-    "Delete All",
+    "Hapus Semua",
     (posOffsets[0]*2+size[0], findBottomYPosition(size, posOffsets[1])),
-    size,
+    deleteAllSize,
     onPressedDeleteAllButton,
     (225, 225, 225),
     (255, 255, 255) 
@@ -64,7 +65,7 @@ deleteAllButton = UIClasses.button(
 UIObjectsStorage.buttons.append(deleteAllButton)
 helpButton = UIClasses.button(
     "?",
-    (posOffsets[0]*3+size[0]*2, findBottomYPosition(size, posOffsets[1])),
+    (posOffsets[0]*6+((deleteAllSize[0])*1.5), findBottomYPosition(size, posOffsets[1])),
     (25, 23),
     onPressedHelp,
     (225, 225, 225),
@@ -73,7 +74,7 @@ helpButton = UIClasses.button(
 UIObjectsStorage.buttons.append(helpButton)
 
 beginButton = UIClasses.button(
-    "Begin",
+    "Mulai",
     (screenDinmensions[0]-size[0], findBottomYPosition(size, posOffsets[1])),
     (75, 23),
     onPressedBegin,
