@@ -2,8 +2,6 @@ import pygame
 import settings
 
 pygame.init()
-screen = pygame.display.set_mode(settings.screenSize)
-
 import renderService
 import solarPanel
 import barrier
@@ -45,7 +43,7 @@ while running:
     events = pygame.event.get()
     checkEvents(events)
     clouds.spawnCloud()
-    renderService.renderer.renderAll(screen, events)
+    renderService.renderer.renderAll(settings.screen, events)
     clock.tick(settings.fps)
             
 pygame.quit()

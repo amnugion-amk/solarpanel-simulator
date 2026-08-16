@@ -6,9 +6,12 @@ bgColor = settings.backgroundColor
 class rendererClass():
     def __init__(self, objectStorages):
         self.objectStorages = objectStorages
+        self.transparentSurface = pygame.Surface((settings.screenSize), pygame.SRCALPHA)
         
     def renderAll(self, screen, events):
         screen.fill(bgColor)
+        screen.blit(self.transparentSurface, (0, 0))
+        self.transparentSurface.fill(bgColor)
         
         for objectStorage in self.objectStorages:
             objectStorage.render(screen, events)

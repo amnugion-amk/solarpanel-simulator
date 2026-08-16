@@ -27,6 +27,10 @@ def whilePlacement():
 def finalizePlacement():
     global currentBarrier, placingBarrier
     placingBarrier = False
+    if not currentBarrier: return
+    
+    currentBarrier.revertTransparency()
+    
     currentBarrier = None
     
 def removeLatestBarrier():

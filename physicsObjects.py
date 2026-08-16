@@ -13,12 +13,14 @@ class line():
         self.endPos = endPos
         self.prevPositions = (self.startPos, self.endPos)
         
+        self.transparency = 75
         self.color = color
+        
         self.width = width
         
+        self.currentScreen = renderService.renderer.transparentSurface
+        
         self.centerPos = customMath.lerp(startPos, endPos, 0.5)
-        
-        
     def checkForChanges(self):
         currStart = self.startPos
         currEnd = self.endPos
@@ -29,9 +31,13 @@ class line():
         self.centerPos = customMath.lerp(currStart, currEnd, 0.5)
         self.prevPositions = currPos
         
+    def revertTransparency(self):
+        self.transparency = 255
+        self.currentScreen = settings.screen
+        
     def render(self, screen):
         self.checkForChanges()
-        pygame.draw.line(screen, self.color, self.startPos, self.endPos, self.width)
+        pygame.draw.line(self.currentScreen, (self.color[0], self.color[1], self.color[2], self.transparency), self.startPos, self.endPos, self.width)
         
 class sun():
     def __init__(self):
@@ -41,6 +47,7 @@ class sun():
         )
         
         self.rect = self.image.get_rect()
+        self.paused = False
         
         self.yPeak = 0
         self.yBase = screenSize[1]
@@ -63,11 +70,14 @@ class sun():
          
     def render(self, screen):
         if not self.showingSun: return
+        if self.progress == 0:
+            self.paused = False
         
         if self.progress < 1:
-            self.rect.x = self.startX + (self.endX-self.startX) * self.progress
-            self.rect.y = customMath.sineHalfCircle(self.yPeak, self.yBase, self.progress)
-            self.progress += self.speed
+            if not self.paused:
+                self.rect.x = self.startX + (self.endX-self.startX) * self.progress
+                self.rect.y = customMath.sineHalfCircle(self.yPeak, self.yBase, self.progress)
+                self.progress += self.speed
             
             if len(physicsObjectStorage.solarPanel) != 1: self.draw(screen); return
             solarPanel = physicsObjectStorage.solarPanel[0]
@@ -79,10 +89,10 @@ class sun():
             for barrier in physicsObjectStorage.barriers:
                 if customMath.checkIntersect(sunCenter, solarPanelCenter, barrier.startPos, barrier.endPos):
                     rayColor = (255, 0, 0)
-                    self.blocked += 1
+                    self.blocked += 1 if not self.paused else 0
                     break
                 
-            self.total += 1
+            self.total += 1 if not self.paused else 0
             
             pygame.draw.line(screen, rayColor, sunCenter, solarPanelCenter, 5)
             self.draw(screen)
@@ -94,6 +104,7 @@ class sun():
         self.showingSun = False
         
         result.resultBarObj.textLabel.currentText = result.formatResults(self.requestResults())
+        self.paused = False
         
         self.total = 0
         self.blocked = 0

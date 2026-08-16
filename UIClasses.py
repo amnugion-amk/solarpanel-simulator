@@ -1,5 +1,6 @@
 import pygame
 import settings
+import renderService
 
 class textLabel():
     def __init__(self, fontSize, color, text, pos):
@@ -49,6 +50,54 @@ class button():
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and isColliding:
                 self.onPressed()
+    
+class buttonImg(button):
+    def __init__(self, image, pos, size, onPressed, colorOnHover, colorNormal, textString=""):
+        super().__init__(textString, pos, size, onPressed, colorOnHover, colorNormal)
+        self.image = pygame.transform.scale(pygame.image.load(image).convert_alpha(), size)
+        self.imageRect = self.image.get_rect()
+        self.imageRect.center = self.rect.center
+        
+    def draw(self, screen, isColliding):
+        self.currentColor = self.colorOnHover if isColliding else self.colorNormal
+            
+        pygame.draw.rect(screen, self.currentColor, self.rect, border_radius=2)
+        screen.blit(self.image, self.imageRect)
+    
+    def changeImage(self, newImg):
+        self.image = pygame.transform.scale(pygame.image.load(newImg).convert_alpha(), self.size)
+        
+class beginSunButton(buttonImg):
+    def __init__(self, image, pos, size, onPressed, colorOnHover, colorNormal, textString=""):
+        super().__init__(image, pos, size, onPressed, colorOnHover, colorNormal, textString)
+        self.playImg = "sprites/play.png"
+        self.endImg = "sprites/stop.png"
+        
+        self.currentImg = self.playImg
+        
+        self.sun = renderService.physicsObjectsStorage.sun[-1]
+    def render(self, screen, events):
+        if not self.sun.showingSun and self.currentImg == self.endImg:
+            self.changeImage(self.playImg)
+            self.currentImg = self.playImg
+            
+        mousePos = pygame.mouse.get_pos()
+        isColliding = self.rect.collidepoint(mousePos)
+                
+        self.draw(screen, isColliding)
+                
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and isColliding:
+                self.onPressed()
+            
+    def updateImg(self):
+        if self.sun.showingSun == True:
+            self.changeImage(self.endImg)
+            self.currentImg = self.endImg
+        else:
+            self.changeImage(self.playImg)
+            self.currentImg = self.playImg
+            
         
 class basicUI:
     def __init__(self, pos, size, color, radius=2):

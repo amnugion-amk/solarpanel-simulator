@@ -25,8 +25,9 @@ def whilePlacement():
     
 def finalizePlacement():
     global placingPanel
-    if not placingPanel: return
+    if not placingPanel or not checkSolarPanel(): return
     
+    physicsObjectStorage.solarPanel[-1].revertTransparency()
     placingPanel = False
     
 def remove():

@@ -37,14 +37,22 @@ def onPressedDeleteAllButton():
     
 def onPressedHelp():
     helpUIObj.enabled = not helpUIObj.enabled
+    
 def onPressedBegin():
-    sun.showingSun = True
+    if sun.showingSun:
+        sun.endCycle()
+    else:
+        sun.showingSun = True
+    beginButton.updateImg()
    
+def onPressedPause():
+    sun.paused = not sun.paused   
+
 size = (80, 23)
 posOffsets = (5, 10)
     
 controlsButton = UIClasses.button(
-    "Kontrol",
+    "Kontrols",
     (posOffsets[0], findBottomYPosition(size, posOffsets[1])),
     size,
     onPressedControlsButton,
@@ -73,12 +81,22 @@ helpButton = UIClasses.button(
 )
 UIObjectsStorage.buttons.append(helpButton)
 
-beginButton = UIClasses.button(
-    "Mulai",
-    (screenDinmensions[0]-size[0], findBottomYPosition(size, posOffsets[1])),
-    (75, 23),
+beginButton = UIClasses.beginSunButton(
+    "sprites/play.png",
+    (screenDinmensions[0]-25-posOffsets[0], findBottomYPosition(size, posOffsets[1])),
+    (25, 23),
     onPressedBegin,
     (225, 225, 225),
     (255, 255, 255) 
 )
 UIObjectsStorage.buttons.append(beginButton)
+
+pauseButton = UIClasses.buttonImg(
+    "sprites/pause.png",
+    (screenDinmensions[0]-50-posOffsets[0]*2, findBottomYPosition(size, posOffsets[1])),
+    (25, 23),
+    onPressedPause,
+    (225, 225, 225),
+    (255, 255, 255) 
+)
+UIObjectsStorage.buttons.append(pauseButton)
