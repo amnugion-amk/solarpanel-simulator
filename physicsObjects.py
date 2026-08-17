@@ -3,7 +3,6 @@ import renderService
 import settings
 import customMath
 import result
-import copy
 
 screenSize = settings.screenSize
 physicsObjectStorage = renderService.physicsObjectsStorage
@@ -41,12 +40,6 @@ class line():
         self.checkForChanges()
         pygame.draw.line(self.currentScreen, (self.color[0], self.color[1], self.color[2], self.transparency), self.startPos, self.endPos, self.width)
         
-    def __deepcopy__(self, memory):
-        copy = self.__class__(self.startPos, self.endPos, self.color, self.width)
-        memory[id(self)] = copy
-        
-        return copy
-        
 class sun():
     def __init__(self):
         self.image = pygame.transform.scale(
@@ -66,9 +59,6 @@ class sun():
         self.progress = 0
         self.speed = 0.003
         
-        self.rect.x = self.startX
-        self.rect.y = self.yBase
-        
         self.showingSun = False
         
         self.blocked = 0
@@ -83,7 +73,7 @@ class sun():
         
         if self.progress < 1:
             if not self.paused:
-                self.rect.centerx = self.startX + (self.endX-self.startX) * self.progress
+                self.rect.centerx = customMath.lerp((self.startX, self.yBase), (self.endX, self.yBase), self.progress)[0]
                 self.rect.centery = customMath.sineHalfCircle(self.yPeak, self.yBase, self.progress)
                 self.progress += self.speed
             
@@ -170,10 +160,16 @@ class sunNodes():
         if not showingNodes: return
         pygame.draw.circle(screen, self.color, self.pos, self.radius, self.width)
     
-
-
 prevBarriers = []
 prevSolarPanel = []
+
+def formatLineListforNodes(lineList):
+    newList = []
+    for placedLine in lineList:
+        newList.append(
+            (placedLine.startPos, placedLine.endPos, id(placedLine))
+        )
+    return newList
 
 def findSolarPanelPos():
     return physicsObjectStorage.solarPanel[-1].centerPos if len(physicsObjectStorage.solarPanel)==1 else False    
@@ -199,10 +195,9 @@ def createNewNodes(solarPanelPos):
 def checkForPlacementDifferences():
     global prevSolarPanel, prevBarriers
     
-    if physicsObjectStorage.barriers != prevBarriers or physicsObjectStorage.solarPanel != prevSolarPanel:
-        prevBarriers = copy.deepcopy(physicsObjectStorage.barriers)
-        prevSolarPanel = copy.deepcopy(physicsObjectStorage.solarPanel)
-        
+    if formatLineListforNodes(physicsObjectStorage.barriers) != prevBarriers or formatLineListforNodes(physicsObjectStorage.solarPanel) != prevSolarPanel:
+        prevBarriers = formatLineListforNodes(physicsObjectStorage.barriers)
+        prevSolarPanel = formatLineListforNodes(physicsObjectStorage.solarPanel)
         createNewNodes(findSolarPanelPos())
         
 createNewNodes(findSolarPanelPos())

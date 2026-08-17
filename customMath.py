@@ -1,5 +1,4 @@
 import math
-import renderService
 
 def checkCCW(a, b, c):
     slopeAC_numer = c[1]-a[1]

@@ -13,7 +13,7 @@ class textLabel():
         self.textSurface = self.font.render(self.currentText, True, self.currentColor)
         self.textRect = self.textSurface.get_rect()
         self.textRect.center = self.pos
-        self.previousText = None
+        self.previousText = text
         
     def render(self, screen):
         if self.currentText != self.previousText:
@@ -38,7 +38,7 @@ class button():
         self.currentColor = self.colorNormal
         
         self.textString = textString
-        self.textLabel = textLabel(24, (0, 0, 0,), self.textString, self.rect.center)        
+        self.textLabel = textLabel(24, (0, 0, 0), self.textString, self.rect.center)        
         
         
     def draw(self, screen, isColliding):
@@ -77,11 +77,9 @@ class checkBoxButton(button):
         super().__init__(textStringTicked, pos, size, onPressedTicked, colorOnHover, colorNormal)               
         self.ticked = False
         self.textLabel.currentText = textStringUnticked
-        
-        self.textStringUnticked = textStringUnticked
         self.textStates = {
-            False : (self.textStringUnticked, onPressedUnticked),
-            True : (self.textString, onPressedTicked)
+            False : (textStringUnticked, onPressedUnticked),
+            True : (textStringTicked, onPressedTicked)
         }
                 
     def render(self, screen, events):
@@ -93,8 +91,8 @@ class checkBoxButton(button):
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and isColliding:
                     self.ticked = not self.ticked
-                    self.textLabel.currentText = self.textStates.get(self.ticked)[0]
-                    self.textStates.get(self.ticked)[1]()
+                    self.textLabel.currentText = self.textStates[self.ticked][0]
+                    self.textStates[self.ticked][1]()
         
 class beginSunButton(buttonImg):
     def __init__(self, image, pos, size, onPressed, colorOnHover, colorNormal, textString=""):
@@ -106,9 +104,7 @@ class beginSunButton(buttonImg):
         
         self.sun = renderService.physicsObjectsStorage.sun[-1]
     def render(self, screen, events):
-        if not self.sun.showingSun and self.currentImg == self.endImg:
-            self.changeImage(self.playImg)
-            self.currentImg = self.playImg
+        self.updateImg()
             
         mousePos = pygame.mouse.get_pos()
         isColliding = self.rect.collidepoint(mousePos)
@@ -120,10 +116,10 @@ class beginSunButton(buttonImg):
                 self.onPressed()
             
     def updateImg(self):
-        if self.sun.showingSun == True:
+        if self.sun.showingSun == True and self.currentImg == self.playImg:
             self.changeImage(self.endImg)
             self.currentImg = self.endImg
-        else:
+        elif self.sun.showingSun == False and self.currentImg == self.endImg:
             self.changeImage(self.playImg)
             self.currentImg = self.playImg
             
@@ -133,7 +129,7 @@ class basicUI:
         self.currentColor = color
         self.radius = radius
         
-        self.rect = (
+        self.rect = pygame.Rect(
             pos[0],
             pos[1],
             size[0],
@@ -141,19 +137,10 @@ class basicUI:
         )
         
         self.enabled = True
-        self.exitButton = button("X", self.rect, (15, 15), self.exitUI, (225, 225, 225), (255, 255, 255))
-        
-    def updateRect(self, pos, size):
-        self.rect = pygame.Rect(
-            pos[0],
-            pos[1],
-            size[0],
-            size[1]
-        )
+        self.exitButton = button("X", (self.rect.x, self.rect.y), (15, 15), self.exitUI, (225, 225, 225), (255, 255, 255))
 
     def exitUI(self):
         self.enabled = False
-        
         
     def render(self, screen, events):
         if not self.enabled: return

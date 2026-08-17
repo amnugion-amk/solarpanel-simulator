@@ -6,7 +6,6 @@ import physicsObjects
 
 physicsObjectStorage = renderService.physicsObjectsStorage
 
-spawnProbability = [1, 150]
 speedProbability = [5, 10]
 cloudOffset = 250
 

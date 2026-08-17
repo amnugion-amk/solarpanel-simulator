@@ -22,7 +22,7 @@ def checkEvents(events):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 solarPanel.initPlacement()
-            elif event.key == pygame.K_b:
+            if event.key == pygame.K_b:
                 barrier.initPlacement()
             
             if event.key == pygame.K_s:
