@@ -167,7 +167,7 @@ def formatLineListforNodes(lineList):
     newList = []
     for placedLine in lineList:
         newList.append(
-            (placedLine.startPos, placedLine.endPos, id(placedLine))
+            (placedLine.startPos, placedLine.endPos)
         )
     return newList
 
