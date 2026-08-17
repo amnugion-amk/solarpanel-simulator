@@ -100,3 +100,25 @@ pauseButton = UIClasses.buttonImg(
     (255, 255, 255) 
 )
 UIObjectsStorage.buttons.append(pauseButton)
+
+checkboxSize = (200, 23)
+
+def ticked():
+    physicsObjects.showingNodes = True
+
+def unticked():
+    print("unticked.")
+    physicsObjects.showingNodes = False
+
+checkbox = UIClasses.checkBoxButton(
+    "Hapuskan Node Siklus",
+    (posOffsets[0], findBottomYPosition(size, posOffsets[1]*2+size[1])),
+    checkboxSize,
+    ticked,
+    unticked,
+    (225, 225, 225),
+    (255, 255, 255),
+    "Tampilkan Node Siklus"
+)
+
+UIObjectsStorage.buttons.append(checkbox)

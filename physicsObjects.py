@@ -3,9 +3,11 @@ import renderService
 import settings
 import customMath
 import result
+import copy
 
 screenSize = settings.screenSize
 physicsObjectStorage = renderService.physicsObjectsStorage
+showingNodes = False
 
 class line():
     def __init__(self, startPos, endPos, color, width):
@@ -38,6 +40,12 @@ class line():
     def render(self, screen):
         self.checkForChanges()
         pygame.draw.line(self.currentScreen, (self.color[0], self.color[1], self.color[2], self.transparency), self.startPos, self.endPos, self.width)
+        
+    def __deepcopy__(self, memory):
+        copy = self.__class__(self.startPos, self.endPos, self.color, self.width)
+        memory[id(self)] = copy
+        
+        return copy
         
 class sun():
     def __init__(self):
@@ -75,8 +83,8 @@ class sun():
         
         if self.progress < 1:
             if not self.paused:
-                self.rect.x = self.startX + (self.endX-self.startX) * self.progress
-                self.rect.y = customMath.sineHalfCircle(self.yPeak, self.yBase, self.progress)
+                self.rect.centerx = self.startX + (self.endX-self.startX) * self.progress
+                self.rect.centery = customMath.sineHalfCircle(self.yPeak, self.yBase, self.progress)
                 self.progress += self.speed
             
             if len(physicsObjectStorage.solarPanel) != 1: self.draw(screen); return
@@ -150,3 +158,51 @@ class cloud:
             if self.rect.x > settings.screenSize[0]:
                 return True
             return False
+        
+class sunNodes():
+    def __init__(self, color, pos, radius, width):
+        self.color = color
+        self.pos = pos
+        self.radius = radius
+        self.width = width
+    
+    def render(self, screen):
+        if not showingNodes: return
+        pygame.draw.circle(screen, self.color, self.pos, self.radius, self.width)
+    
+
+
+prevBarriers = []
+prevSolarPanel = []
+
+def findSolarPanelPos():
+    return physicsObjectStorage.solarPanel[-1].centerPos if len(physicsObjectStorage.solarPanel)==1 else False    
+
+def createNewNodes(solarPanelPos):
+    physicsObjectStorage.sunNodes.clear()
+    sunArchNodes = customMath.findSunPathNodes(
+        physicsObjectStorage.sun[-1],
+        50,
+        physicsObjectStorage.barriers,
+        solarPanelPos
+    )
+            
+    for nodeInfo in sunArchNodes:
+        physicsObjectStorage.sunNodes.append(sunNodes(
+            nodeInfo[2],
+            (nodeInfo[0], nodeInfo[1]),
+            5,
+            3    
+            )
+        )
+
+def checkForPlacementDifferences():
+    global prevSolarPanel, prevBarriers
+    
+    if physicsObjectStorage.barriers != prevBarriers or physicsObjectStorage.solarPanel != prevSolarPanel:
+        prevBarriers = copy.deepcopy(physicsObjectStorage.barriers)
+        prevSolarPanel = copy.deepcopy(physicsObjectStorage.solarPanel)
+        
+        createNewNodes(findSolarPanelPos())
+        
+createNewNodes(findSolarPanelPos())

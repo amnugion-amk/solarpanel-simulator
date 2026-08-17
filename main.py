@@ -44,6 +44,9 @@ while running:
     checkEvents(events)
     clouds.spawnCloud()
     renderService.renderer.renderAll(settings.screen, events)
+    
+    physicsObjects.checkForPlacementDifferences()
+    
     clock.tick(settings.fps)
             
 pygame.quit()

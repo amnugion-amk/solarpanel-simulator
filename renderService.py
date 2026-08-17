@@ -49,10 +49,12 @@ class physicsObjects(objectStorage_SuperClass):
         self.solarPanel = []
         self.sun = []
         
+        self.sunNodes = []
+        
         self.clouds = []
         self.cloudsDeleteList = []
         
-        self.renderQueue = [self.sun, self.clouds, self.barriers, self.solarPanel]
+        self.renderQueue = [self.sun, self.clouds, self.sunNodes, self.barriers, self.solarPanel]
         
     def destroyAll(self):
         self.barriers.clear()

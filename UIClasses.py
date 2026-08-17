@@ -4,19 +4,24 @@ import renderService
 
 class textLabel():
     def __init__(self, fontSize, color, text, pos):
+        self.pos = pos
+        
         self.font = pygame.font.Font(None, fontSize)
         self.currentColor = color
         self.currentText = text
 
         self.textSurface = self.font.render(self.currentText, True, self.currentColor)
         self.textRect = self.textSurface.get_rect()
-        self.textRect.center = pos
+        self.textRect.center = self.pos
         self.previousText = None
         
     def render(self, screen):
         if self.currentText != self.previousText:
             self.textSurface = self.font.render(self.currentText, True, self.currentColor)
             self.previousText = self.currentText
+            self.textRect = self.textSurface.get_rect()
+            self.textRect.center = self.pos
+            
         screen.blit(self.textSurface, self.textRect)
 
 class button():
@@ -66,6 +71,30 @@ class buttonImg(button):
     
     def changeImage(self, newImg):
         self.image = pygame.transform.scale(pygame.image.load(newImg).convert_alpha(), self.size)
+        
+class checkBoxButton(button):
+    def __init__(self, textStringTicked, pos, size, onPressedTicked, onPressedUnticked, colorOnHover, colorNormal, textStringUnticked):
+        super().__init__(textStringTicked, pos, size, onPressedTicked, colorOnHover, colorNormal)               
+        self.ticked = False
+        self.textLabel.currentText = textStringUnticked
+        
+        self.textStringUnticked = textStringUnticked
+        self.textStates = {
+            False : (self.textStringUnticked, onPressedUnticked),
+            True : (self.textString, onPressedTicked)
+        }
+                
+    def render(self, screen, events):
+            mousePos = pygame.mouse.get_pos()
+            isColliding = self.rect.collidepoint(mousePos)
+            
+            self.draw(screen, isColliding)
+            
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and isColliding:
+                    self.ticked = not self.ticked
+                    self.textLabel.currentText = self.textStates.get(self.ticked)[0]
+                    self.textStates.get(self.ticked)[1]()
         
 class beginSunButton(buttonImg):
     def __init__(self, image, pos, size, onPressed, colorOnHover, colorNormal, textString=""):
